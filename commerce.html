@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>E-Commerce Portal - Assignment 3</title>
+  <style>
+    :root{--accent:#0b69ff;--muted:#666}
+    body{font-family:Inter,Segoe UI,Roboto,Arial;background:#f6f7fb;margin:0;color:#222}
+    header{background:#fff;border-bottom:1px solid #e6e9ef;position:sticky;top:0;z-index:10}
+    .container{max-width:1100px;margin:0 auto;padding:16px}
+    nav{display:flex;align-items:center;justify-content:space-between}
+    .logo{font-weight:700;color:var(--accent)}
+    .menu{display:flex;gap:12px}
+    .menu a{color:#222;text-decoration:none;padding:8px 12px;border-radius:6px}
+    .menu a:hover{background:#eef3ff}
+    .actions{display:flex;gap:8px;align-items:center}
+    button{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+    button.secondary{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+    main{padding:20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .card{background:#fff;padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(20,20,40,0.04)}
+    .product img{width:100%;height:150px;object-fit:cover;border-radius:8px}
+    .product h4{margin:8px 0 4px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Forms */
+    form{display:flex;flex-direction:column;gap:8px}
+    input,textarea,select{padding:8px;border:1px solid #dde3f0;border-radius:6px;font-size:14px}
+    .inline{display:flex;gap:8px}
+
+    /* Lists */
+    ul{list-style:none;padding:0;margin:0}
+    .small{font-size:13px}
+
+    footer{padding:20px;background:#fff;border-top:1px solid #e6e9ef;margin-top:20px}
+
+    /* Responsive helpers */
+    @media (max-width:600px){.menu{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="left">
+          <span class="logo">MyShop</span>
+        </div>
+        <div class="menu">
+          <a href="#home">Home</a>
+          <a href="#products">Product items</a>
+          <a href="#contact">Contact Us</a>
+          <a href="#about">About Us</a>
+        </div>
+        <div class="actions">
+          <button id="open-register">Register</button>
+          <button class="secondary" id="open-login">Login</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HOME -->
+    <section id="home" class="card">
+      <h2>Welcome to MyShop</h2>
+      <p class="muted">A simple e-commerce demo with registration/login validation, orders, wishlist, reviews, customer care and reporting.</p>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="products" style="margin-top:18px">
+      <h3>Product items</h3>
+      <div id="product-grid" class="grid"></div>
+    </section>
+
+    <!-- ORDERS, WISHLIST, REVIEWS -->
+    <section style="margin-top:18px;display:grid;grid-template-columns:1fr;gap:16px">
+      <div class="card">
+        <h3>Orders list</h3>
+        <div id="orders-list" class="small muted">No orders yet.</div>
+      </div>
+
+      <div class="card">
+        <h3>Wishlist</h3>
+        <ul id="wishlist-list"></ul>
+      </div>
+
+      <div class="card">
+        <h3>Comments & Reviews</h3>
+        <div id="reviews-list"></div>
+        <form id="review-form" style="margin-top:8px">
+          <input id="review-name" placeholder="Your name" required>
+          <select id="review-product">
+            <option value="">Select product</option>
+          </select>
+          <textarea id="review-text" placeholder="Write your review" rows="3" required></textarea>
+          <div class="inline">
+            <button type="submit">Submit review</button>
+            <button type="button" id="clear-reviews" class="secondary">Clear reviews</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Customer Care</h3>
+        <p class="muted">For help, call 1800-XXX-XXXX or send a message below.</p>
+        <form id="customer-care-form">
+          <input id="cc-name" placeholder="Your name" required>
+          <input id="cc-email" placeholder="Your email" required>
+          <textarea id="cc-message" placeholder="Your message" rows="3" required></textarea>
+          <div class="inline"><button type="submit">Send</button><button type="button" class="secondary" id="view-cc">View messages</button></div>
+        </form>
+        <div id="cc-messages" style="margin-top:8px"></div>
+      </div>
+
+      <div class="card">
+        <h3>Reporting options</h3>
+        <p class="muted">Report a product issue or a user. These reports would normally go to admin panel.</p>
+        <form id="report-form">
+          <select id="report-type" required>
+            <option value="">Select report type</option>
+            <option value="product">Product issue</option>
+            <option value="seller">Seller issue</option>
+            <option value="other">Other</option>
+          </select>
+          <input id="report-item" placeholder="Product / Seller ID (optional)">
+          <textarea id="report-desc" placeholder="Describe the issue" rows="3" required></textarea>
+          <button type="submit">Report</button>
+        </form>
+        <div id="reports-log" class="muted small" style="margin-top:8px"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" style="margin-top:18px" class="card">
+      <h3>About Us</h3>
+      <p class="muted">MyShop is an example portal built for assignment demonstration purposes.</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="margin-top:18px" class="card">
+      <h3>Contact Us</h3>
+      <form id="contact-form">
+        <input id="contact-name" placeholder="Name" required>
+        <input id="contact-email" placeholder="Email" required>
+        <textarea id="contact-message" placeholder="Message" rows="3" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <div id="contact-log" style="margin-top:8px" class="muted small"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">&copy; <span id="year"></span> MyShop — Demo Assignment</div>
+  </footer>
+
+  <!-- Registration & Login Modals (simple) -->
+  <div id="modal-root"></div>
+
+  <script>
+    /* ------------------ Sample data ------------------ */
+    const PRODUCTS = [
+      {id: 'p1', title: 'Wireless Headphones', price: 1299, img: 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQklNMOWXWDOhsQ1ozeguVDMuxfSG9AwS6qG8V3aHMnZnM81yHbzEIJawA5Ooc0uF2arpUreLI5ZO6q841kLkm-vSobklxoIwDZthsyr4c9GzulJUabbK64'},
+      {id: 'p2', title: 'Smart Watch', price: 3499, img: 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSd2ozhYomVez7qlyqUyvv_rzW5a7Skm6w1VkoeXVyWCBaV4oJJAfs2j-8PRFklBKjsEV3K7bhnhH8OL8xC3SEyhPQquh-3wjxFKuinRxZzu_fv34-pHONTaVElDc9Yq650hyOC2Vw&usqp=CAc'},
+      {id: 'p3', title: 'Bluetooth Speaker', price: 899, img: 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSLJh-H2fYR8J5_URUDoKiUvUTFEDepHq1KqQ3o32lLxuz1WioIMO4AoJMQgReJw6jWPoeIudQYUqiY7bHaxWNbG_PX9j6Xug3zw7j1MR8bATUhZi5J4nMXDA'},
+      {id: 'p4', title: 'Laptop Sleeve', price: 499, img: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT3JdWFoade1RC8z_8BpLnjSX-7Iost3TFvU8BFvZ80cBa5daH5_U7b7FBrCTZ683MTjq616weB-jqmzUoZVLgMzZ81xwkVo3N5vnZIHrZEMvBCINj9UDAq'}
+    ];
+
+    /* ------------------ In-memory stores ------------------ */
+    let ORDERS = [];
+    let WISHLIST = [];
+    let REVIEWS = [];
+    let CC_MESSAGES = [];
+    let REPORTS = [];
+
+    /* ------------------ Utilities ------------------ */
+    function el(sel){return document.querySelector(sel)}
+    function els(sel){return document.querySelectorAll(sel)}
+
+    /* ------------------ Render products ------------------ */
+    function renderProducts(){
+      const grid = el('#product-grid');
+      grid.innerHTML = '';
+      PRODUCTS.forEach(p =>{
+        const div = document.createElement('div'); div.className='card product';
+        div.innerHTML = `
+          <img src="${p.img}" alt="${p.title}">
+          <h4>${p.title}</h4>
+          <div class="muted">₹ ${p.price}</div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <button onclick="addToWishlist('${p.id}')">Add to wishlist</button>
+            <button onclick="placeOrder('${p.id}')" class="secondary">Buy</button>
+          </div>`;
+        grid.appendChild(div);
+      });
+      // populate review product select
+      const sel = el('#review-product');
+      sel.innerHTML = '<option value="">Select product</option>' + PRODUCTS.map(p=>`<option value="${p.id}">${p.title}</option>`).join('');
+    }
+
+    /* ------------------ Wishlist ------------------ */
+    function addToWishlist(pid){
+      const prod = PRODUCTS.find(p=>p.id===pid);
+      if(!prod) return;
+      if(WISHLIST.find(p=>p.id===pid)) { alert('Already in wishlist'); return; }
+      WISHLIST.push(prod);
+      renderWishlist();
+    }
+    function renderWishlist(){
+      const ul = el('#wishlist-list'); ul.innerHTML='';
+      if(WISHLIST.length===0) { ul.innerHTML='<li class="muted">Your wishlist is empty</li>'; return; }
+      WISHLIST.forEach(w=>{
+        const li = document.createElement('li'); li.className='small';
+        li.innerHTML = `${w.title} — ₹ ${w.price} <button style="margin-left:8px" onclick="removeFromWishlist('${w.id}')" class="secondary">Remove</button>`;
+        ul.appendChild(li);
+      });
+    }
+    function removeFromWishlist(pid){
+      WISHLIST = WISHLIST.filter(p=>p.id!==pid);
+      renderWishlist();
+    }
+
+    /* ------------------ Orders ------------------ */
+    function placeOrder(pid){
+      const prod = PRODUCTS.find(p=>p.id===pid);
+      if(!prod) return; 
+      ORDERS.push({id:'o'+(ORDERS.length+1), item:prod, date: new Date().toLocaleString()});
+      renderOrders();
+      alert('Order placed for ' + prod.title);
+    }
+    function renderOrders(){
+      const node = el('#orders-list');
+      if(ORDERS.length===0) { node.innerHTML='No orders yet.'; return; }
+      node.innerHTML = ORDERS.map(o=>`<div class="small card" style="padding:8px;margin-bottom:8px"><strong>${o.item.title}</strong><div class="muted">Order ID: ${o.id} • ${o.date}</div></div>`).join('');
+    }
+
+    /* ------------------ Reviews ------------------ */
+    function renderReviews(){
+      const node = el('#reviews-list');
+      if(REVIEWS.length===0){ node.innerHTML='<div class="muted small">No reviews yet.</div>'; return; }
+      node.innerHTML = REVIEWS.map(r=>`<div class="card small" style="padding:8px;margin-bottom:8px"><strong>${r.name}</strong> <span class="muted">on ${r.productTitle}</span><div>${r.text}</div></div>`).join('');
+    }
+
+    /* ------------------ Forms & Validation ------------------ */
+    // Registration modal & validation
+    function openRegister(){
+      showModal('Register', `
+        <form id="reg-form">
+          <input id="reg-name" placeholder="Full name" required>
+          <input id="reg-email" placeholder="Email" required>
+          <input id="reg-phone" placeholder="Phone (10 digits)" required>
+          <input id="reg-pass" placeholder="Password (min 6 chars)" type="password" required>
+          <div class="inline"><button type="submit">Register</button><button type="button" class="secondary" onclick="closeModal()">Cancel</button></div>
+        </form>
+      `);
+
+      el('#reg-form').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        // validations
+        const name = el('#reg-name').value.trim();
+        const email = el('#reg-email').value.trim();
+        const phone = el('#reg-phone').value.trim();
+        const pass = el('#reg-pass').value;
+        if(name.length < 2) {alert('Enter valid name'); return;} 
+        if(!/^\S+@\S+\.\S+$/.test(email)){alert('Enter valid email'); return;} 
+        if(!/^\d{10}$/.test(phone)){alert('Enter 10 digit phone'); return;}
+        if(pass.length < 6){alert('Password must be at least 6 chars'); return;}
+        alert('Registration successful for ' + name);
+        closeModal();
+      });
+    }
+
+    // Login modal & (basic) validation
+    function openLogin(){
+      showModal('Login', `
+        <form id="login-form">
+          <input id="login-email" placeholder="Email" required>
+          <input id="login-pass" placeholder="Password" type="password" required>
+          <div class="inline"><button type="submit">Login</button><button type="button" class="secondary" onclick="closeModal()">Cancel</button></div>
+        </form>
+      `);
+      el('#login-form').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const email = el('#login-email').value.trim();
+        const pass = el('#login-pass').value;
+        if(!/^\S+@\S+\.\S+$/.test(email)){alert('Enter valid email'); return;} 
+        if(pass.length < 6){alert('Wrong credentials'); return;} 
+        alert('Login successful'); closeModal();
+      });
+    }
+
+    /* ------------------ Modal helpers ------------------ */
+    function showModal(title, innerHTML){
+      const root = el('#modal-root');
+      root.innerHTML = `
+        <div id="modal-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:50">
+          <div style="width:95%;max-width:420px;background:#fff;padding:16px;border-radius:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><h3>${title}</h3><button onclick="closeModal()" class="secondary">X</button></div>
+            <div>${innerHTML}</div>
+          </div>
+        </div>
+      `;
+    }
+    function closeModal(){ el('#modal-root').innerHTML=''; }
+
+    /* ------------------ Review submission ------------------ */
+    el('#review-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = el('#review-name').value.trim();
+      const pid = el('#review-product').value;
+      const text = el('#review-text').value.trim();
+      if(!name||!pid||!text){alert('Please complete all fields');return}
+      const productTitle = PRODUCTS.find(p=>p.id===pid).title;
+      REVIEWS.push({name,productId:pid,productTitle,text,date:new Date().toLocaleString()});
+      el('#review-name').value=''; el('#review-text').value=''; el('#review-product').value='';
+      renderReviews();
+    });
+    el('#clear-reviews').addEventListener('click', ()=>{ if(confirm('Clear all reviews?')){REVIEWS=[];renderReviews()} });
+
+    /* ------------------ Customer care ------------------ */
+    el('#customer-care-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = el('#cc-name').value.trim();
+      const email = el('#cc-email').value.trim();
+      const msg = el('#cc-message').value.trim();
+      if(!name||!/^\S+@\S+\.\S+$/.test(email)||!msg){alert('Please enter valid details');return}
+      CC_MESSAGES.push({name,email,msg,date:new Date().toLocaleString()});
+      el('#cc-name').value=''; el('#cc-email').value=''; el('#cc-message').value='';
+      alert('Message sent to customer care');
+    });
+    el('#view-cc').addEventListener('click', ()=>{
+      const node = el('#cc-messages');
+      if(CC_MESSAGES.length===0) node.innerHTML='<div class="muted small">No messages</div>';
+      else node.innerHTML = CC_MESSAGES.map(m=>`<div class="card small" style="padding:8px;margin-bottom:8px"><strong>${m.name}</strong><div class="muted">${m.email} • ${m.date}</div><div>${m.msg}</div></div>`).join('');
+    });
+
+    /* ------------------ Reporting ------------------ */
+    el('#report-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const type = el('#report-type').value;
+      const item = el('#report-item').value.trim();
+      const desc = el('#report-desc').value.trim();
+      if(!type||!desc){alert('Please fill type and description');return}
+      REPORTS.push({type,item,desc,date:new Date().toLocaleString()});
+      el('#report-type').value=''; el('#report-item').value=''; el('#report-desc').value='';
+      renderReports();
+      alert('Report submitted');
+    });
+    function renderReports(){
+      const node = el('#reports-log');
+      if(REPORTS.length===0) node.innerHTML='No reports yet.'; else node.innerHTML = REPORTS.map(r=>`<div>• ${r.date} — ${r.type} ${r.item?('('+r.item+')'):''}: ${r.desc}</div>`).join('');
+    }
+
+    /* ------------------ Contact form ------------------ */
+    el('#contact-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = el('#contact-name').value.trim();
+      const email = el('#contact-email').value.trim();
+      const msg = el('#contact-message').value.trim();
+      if(!name||!/^\S+@\S+\.\S+$/.test(email)||!msg){alert('Please provide valid contact details');return}
+      const log = el('#contact-log');
+      log.innerHTML = `Thanks ${name}. We'll respond to ${email} soon. (${new Date().toLocaleString()})`;
+      el('#contact-name').value=''; el('#contact-email').value=''; el('#contact-message').value='';
+    });
+
+    /* ------------------ Simple navigation triggers ------------------ */
+    el('#open-register').addEventListener('click', openRegister);
+    el('#open-login').addEventListener('click', openLogin);
+
+    /* ------------------ Initialize ------------------ */
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderProducts(); renderWishlist(); renderOrders(); renderReviews(); renderReports();
+
+  </script>
+</body>
+</html>
